@@ -1,0 +1,37 @@
+# Install packages if not already installed
+# install.packages("ggplot2")
+# install.packages("factoextra")
+
+library(ggplot2)
+library(factoextra)
+
+# Step 1: Create sample dataset
+set.seed(123)
+data <- data.frame(
+  x = c(rnorm(50, mean = 2, sd = 0.5),
+        rnorm(50, mean = 6, sd = 0.5),
+        rnorm(50, mean = 10, sd = 0.5)),
+  y = c(rnorm(50, mean = 2, sd = 0.5),
+        rnorm(50, mean = 6, sd = 0.5),
+        rnorm(50, mean = 10, sd = 0.5))
+)
+print(data)
+
+
+# Step 2: Apply K-means clustering (unsupervised)
+kmeans_result <- kmeans(data, centers = 3, nstart = 25)
+
+# Step 3: Add cluster info to dataset
+data$cluster <- as.factor(kmeans_result$cluster)
+
+# Step 4: Visualize clusters
+ggplot(data, aes(x, y, color = cluster)) +
+  geom_point(size = 3, alpha = 0.7) +
+  geom_point(data = as.data.frame(kmeans_result$centers),
+             aes(x, y),
+             color = "black", size = 5, shape = 8) +
+  labs(title = "Cluster Visualization using K-means",
+       x = "Feature X",
+       y = "Feature Y") +
+  theme_minimal()
+

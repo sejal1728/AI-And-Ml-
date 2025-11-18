@@ -1,0 +1,51 @@
+# -----------------------------
+# Equal Width & Equal Frequency Binning in R
+# -----------------------------
+# Step 1: Create numeric dataset
+Age <- c(18, 22, 25, 30, 35, 37, 40, 44, 46, 50, 55, 60, 65, 70, 75)
+print("Original Data:")
+print(Age)
+
+# Step 2: Equal Width Binning
+k <- 3  # Number of bins
+bins_width <- cut(Age, breaks = k, include.lowest = TRUE)
+
+# Step 3: Equal Frequency Binning
+quantiles <- quantile(Age, probs = seq(0, 1, length.out = k + 1))
+bins_freq <- cut(Age, breaks = quantiles, include.lowest = TRUE)
+
+# Step 4: Combine results
+result <- data.frame(
+  Age,
+  Equal_Width = bins_width,
+  Equal_Frequency = bins_freq
+)
+
+# Step 5: Display result
+print("Binning Results:")
+print(result)
+
+# Optional: Show counts in each bin
+cat("\nCounts per Equal Width Bin:\n")
+print(table(bins_width))
+
+cat("\nCounts per Equal Frequency Bin:\n")
+print(table(bins_freq))
+
+library(ggplot2)
+
+# -----------------------------
+# Bar Chart for Equal Width Binning
+# -----------------------------
+ggplot(result, aes(x = Equal_Width)) +
+  geom_bar(fill = "lightgreen", color = "black") +
+  labs(title = "Equal Width Binning", x = "Bins", y = "Count") +
+  theme_minimal()
+
+# -----------------------------
+# Bar Chart for Equal Frequency Binning
+# -----------------------------
+ggplot(result, aes(x = Equal_Frequency)) +
+  geom_bar(fill = "lightblue", color = "black") +
+  labs(title = "Equal Frequency Binning", x = "Bins", y = "Count") +
+  theme_minimal()

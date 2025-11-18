@@ -1,0 +1,33 @@
+#install.packages("rpart")
+#install.packages("rpart.plot")
+
+library(rpart)
+library(rpart.plot)
+
+
+data(iris)
+
+
+model <- rpart(Species ~ ., data = iris, method = "class",
+               control = rpart.control(cp = 0.01, minsplit = 5))
+
+
+rpart.plot(model,
+           type = 3,             
+           extra = 104,          
+           box.palette = "GnBu", 
+           branch.lty = 2,       
+           shadow.col = "gray",  
+           nn = TRUE,            
+           main = "Decision Tree for Iris Dataset")
+
+
+predictions <- predict(model, iris, type = "class")
+
+# Confusion Matrix
+confusion_matrix <- table(Predicted = predictions, Actual = iris$Species)
+print(confusion_matrix)
+
+# Accuracy
+accuracy <- sum(predictions == iris$Species) / nrow(iris)
+print(paste("Accuracy:", round(accuracy, 2)))
