@@ -1,0 +1,47 @@
+input.txt
+hello world
+hello mapreduce
+hello python
+world of mapreduce
+python is fun
+learning mapreduce with python
+big data processing with mapreduce
+hello data world
+python and mapreduce are powerful
+data analysis with python and mapreduce
+hello big data world
+mapreduce simplifies big data processing
+python programming is fun
+hello mapreduce world
+
+mapper.py
+import sys
+
+for line in sys.stdin:
+    line = line.strip()
+    words = line.split()
+    for word in words:
+        print(f"{word}\t1")
+
+
+reducer.py
+import sys
+
+current_word = None
+current_count = 0
+
+for line in sys.stdin:
+    line = line.strip()
+    word, count = line.split("\t")
+    count = int(count)
+
+    if current_word == word:
+        current_count += count
+    else:
+        if current_word:
+            print(f"{current_word}\t{current_count}")
+        current_word = word
+        current_count = count
+
+if current_word:
+    print(f"{current_word}\t{current_count}")
