@@ -1,0 +1,40 @@
+1. Count Total Records
+Command:
+db.purchases.countDocuments()
+
+2. Find Total Sales Amount
+Aggregation Command:
+db.purchases.aggregate([
+  {
+    $group: {
+      _id: null,
+      totalSales: { $sum: "$price" }
+    }
+  }
+])
+
+3. Total Sales by Category
+Aggregation Command:
+db.purchases.aggregate([
+  {
+    $group: {
+      _id: "$category",
+      totalAmount: { $sum: "$price" }
+    }
+  }
+])
+
+4. Purchase Count by Location
+Aggregation Command:
+db.purchases.aggregate([
+  {
+    $group: {
+      _id: "$location",
+      totalPurchases: { $sum: 1 }
+    }
+  }
+])
+
+5. List All Purchases Above ₹80
+Filter Command:
+{ "price": { $gt: 80 } }
